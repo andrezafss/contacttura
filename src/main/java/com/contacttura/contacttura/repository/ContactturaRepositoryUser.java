@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.contacttura.contacttura.model.ContactturaUser;
 
 @Repository
-public interface ContactturaRepositoryUser extends JpaRepository<ContactturaUser, Long>{}
+public interface ContactturaRepositoryUser extends JpaRepository<ContactturaUser, Long>{
+	
+	ContactturaUser findByUsername(String username);
+}

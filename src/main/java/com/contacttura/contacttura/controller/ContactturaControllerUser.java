@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,9 +41,54 @@ public class ContactturaControllerUser {
 				.map(user -> ResponseEntity.ok().body(user))
 				.orElse(ResponseEntity.notFound().build());
 	}
-
-
 	
+	
+	@PostMapping
+//	http://localhost:8090/user/1
+	public ContactturaUser create(@RequestBody ContactturaUser user) {
+		user.setPassword(criptografarPassword(user.getPassword()));
+		return repository.save(user);
+	}
+	
+	
+//	Update	
+	@PutMapping(value = "{id}")
+//	http://localhost:8090/user/1
+	public ResponseEntity<?> update(@PathVariable long id,
+			@RequestBody ContactturaUser user){
+		return repository.findById(id)
+				.map(record -> {
+					record.setName(user.getName());
+					record.setUsername(user.getUsername());
+					record.setPassword(criptografarPassword(user.getPassword()));
+					record.setAdm(false);
+					ContactturaUser update = repository.save(record);
+					
+					return ResponseEntity.ok().body(update.getName() + update.getPassword());
+				}).orElse(ResponseEntity.notFound().build());
+	}
+	
+//	Delete
+	@DeleteMapping(path = {"/{id}"})
+//	http://localhost:8090/1
+	@PreAuthorize("hasRole('ADM')")
+	public ResponseEntity<?> delete(@PathVariable long id){
+		return repository.findById(id)
+				.map(objeto -> {
+					repository.deleteById(id);
+					
+					return ResponseEntity.ok().body(objeto.getUsername());
+				}).orElse(ResponseEntity.notFound().build());
+	}
+	
+	
+	private String criptografarPassword(String password) {
+		
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String passwordCriptografado = passwordEncoder.encode(password);
+		
+		return passwordCriptografado;
+	}
 	
 	
 	
