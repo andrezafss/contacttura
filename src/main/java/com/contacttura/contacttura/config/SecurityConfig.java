@@ -32,19 +32,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 	}
 	
-	/*@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-		auth.inMemoryAuthentication()
-		.withUser("andreza").password("{noop}root").roles("USER")
-		.and()
-		.withUser("ADMIN").password("{noop}root").roles("USER", "ADMIN");
-		*/
+//	@Autowired
+//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+//		auth.inMemoryAuthentication()
+//		.withUser("andreza").password("{noop}root").roles("USER")
+//		.and()
+//		.withUser("ADMIN").password("{noop}root").roles("USER", "ADMIN");
+		
 	
 
-@Override
-protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-	auth.userDetailsService(customUserDetailService).passwordEncoder(new BCryptPasswordEncoder());
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(customUserDetailService).passwordEncoder(new BCryptPasswordEncoder());
 	
 }
 
-}
+	}
+

@@ -44,7 +44,7 @@ public class ContactturaControllerUser {
 	
 	
 	@PostMapping
-//	http://localhost:8090/user/1
+//	http://localhost:6000/user/1
 	public ContactturaUser create(@RequestBody ContactturaUser user) {
 		user.setPassword(criptografarPassword(user.getPassword()));
 		return repository.save(user);
@@ -53,7 +53,7 @@ public class ContactturaControllerUser {
 	
 //	Update	
 	@PutMapping(value = "{id}")
-//	http://localhost:8090/user/1
+//	http://localhost:6000/user/1
 	public ResponseEntity<?> update(@PathVariable long id,
 			@RequestBody ContactturaUser user){
 		return repository.findById(id)
@@ -61,7 +61,7 @@ public class ContactturaControllerUser {
 					record.setName(user.getName());
 					record.setUsername(user.getUsername());
 					record.setPassword(criptografarPassword(user.getPassword()));
-					record.setAdm(false);
+					record.setAdmin(user.getAdmin());
 					ContactturaUser update = repository.save(record);
 					
 					return ResponseEntity.ok().body(update.getName() + update.getPassword());
@@ -70,7 +70,7 @@ public class ContactturaControllerUser {
 	
 //	Delete
 	@DeleteMapping(path = {"/{id}"})
-//	http://localhost:8090/1
+//	http://localhost:6000/1
 	@PreAuthorize("hasRole('ADM')")
 	public ResponseEntity<?> delete(@PathVariable long id){
 		return repository.findById(id)

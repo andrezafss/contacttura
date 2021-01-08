@@ -32,13 +32,13 @@ public class CustomUserDetailService implements UserDetailsService {
 				.orElseThrow(()-> new UsernameNotFoundException("Usuario nao encontrado"));
 	
 		//lista que retorna as autorizaçoes e permissoes para cada tipo de usuario
-		List<GrantedAuthority> authorityAdm = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADM");
+		List<GrantedAuthority> authorityAdmin = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN");
 		List<GrantedAuthority> authorityUser = AuthorityUtils.createAuthorityList("ROLE_USER");
 		
 		
 		//inserindo os dados do meu model de usuario diretamente dentro do model de usuario do springSecurity, e validando as permissoes ou user
 		return new org.springframework.security.core.userdetails.User
-				(user.getUsername(), user.getPassword(), user.isAdm() ?  authorityAdm : authorityUser);
+				(user.getUsername(), user.getPassword(), user.getAdmin() ?  authorityAdmin : authorityUser);
 	}
 	
 

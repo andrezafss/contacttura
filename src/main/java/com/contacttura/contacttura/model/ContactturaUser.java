@@ -23,6 +23,6 @@ public class ContactturaUser {
 	private String username;
 	private String name;
 	private String password;
-	private boolean adm;
+	private Boolean admin;
 	
 }
